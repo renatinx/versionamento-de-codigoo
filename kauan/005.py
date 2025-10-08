@@ -1,5 +1,5 @@
 # Inicializa a lista com os nomes da família
-familia = ["khaylla","kamily","kauan","franciele","daulirio","khatellen"]
+familia = ["khaylla","kamily","kauan","franciele","jose ferreira","daulirio","khatellen"]
 
 # Ordena a lista em ordem alfabética
 familia_ordenada = sorted(familia)
