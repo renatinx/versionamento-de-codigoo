@@ -12,9 +12,7 @@
  ## 4. Faça um programa que solicite o nome do usuário e depois disso faça uma saudação no formato: "Olá {nome digitado pelo usuário}".
  ## 5. Faça um programa que inicialize uma lista com o nome das pessoas da sua família, depois exiba os nomes em ordem alfabética.
  * Exemplo -> [ Nome do pai, nome da mãe, nome do irmão]
-<<<<<<< Updated upstream
-## 6. Faça um programa que solicite uma mensagem qualquer para o usúario e exiba esta mensagem com todas as letras em maiúscula.
-=======
+ ## 6. Faça um programa que solicite uma mensagem qualquer para o usúario e exiba esta mensagem com todas as letras em maiúscula.
+ ## 7. Faça um progrma que solicite ao usuário 3 nomes de cidades, um por vez, cada vez que o usuário digitar o nome, o programa deve incluir este nome na lista de cidades e depois imprimir mostrando a lista atualizada.
+ * Lista_cidades [ Belo Horizonte] ---> lista atualizada [ Belo Horizonte, Ribeirão das neves]
 
-## 6. faça um programa que solicite uma mensagem qualquer para o usuário e exiba esta mensagem com todas as letras em maiúsculo.
->>>>>>> Stashed changes
