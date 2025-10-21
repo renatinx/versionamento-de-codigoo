@@ -16,3 +16,4 @@
  ## 7. Faça um progrma que solicite ao usuário 3 nomes de cidades, um por vez, cada vez que o usuário digitar o nome, o programa deve incluir este nome na lista de cidades e depois imprimir mostrando a lista atualizada.
  * Lista_cidades [ Belo Horizonte] ---> lista atualizada [ Belo Horizonte, Ribeirão das neves]
 
+## 6. faça um programa que solicite uma mensagem qualquer para o usuário e exiba esta mensagem com todas as letras em maiúsculo.
