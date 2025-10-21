@@ -1,6 +1,10 @@
 cidades = []
-for i in range(3):
+for i in cidades:
     nome = input(f"Digite o nome da cidade {i + 1}: ")
-    cidades.append(nome)
+    CLOSE = 'SAIR'
+    if nome == CLOSE:
+        break
+    else:
+        cidades.append(nome)
     print("Lista atualizada de cidades:", cidades)
 
