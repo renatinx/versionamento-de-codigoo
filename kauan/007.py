@@ -9,13 +9,9 @@ while True:
     lista_cidades.append(nome_cidade)
     print("Lista atualizada:", lista_cidades)
 
- if nome_cidade.lower() == 'sair'
- break
+    if nome_cidade.lower() == 'sair':
+        break
 
-lista_cidades.append(nome_cidade)
-    print("Lista atualizada:", lista_cidades)
-
-print("\nPrograma finalizado. Lista completa:", lista_cidades)
 
 
 
