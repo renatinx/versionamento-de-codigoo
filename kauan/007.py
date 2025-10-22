@@ -4,7 +4,20 @@ lista_cidades = []
 
 print("Lista inicial:", lista_cidades)
 
-while tr
-    nome_cidade = input(f"Digite o nome da cidade #{i + 1}: ")
+while True:
+    nome_cidade = input(f"Digite o nome da cidade (ou 'parar' para sair): ")
     lista_cidades.append(nome_cidade)
     print("Lista atualizada:", lista_cidades)
+
+ if nome_cidade.lower() == 'sair'
+ break
+
+lista_cidades.append(nome_cidade)
+    print("Lista atualizada:", lista_cidades)
+
+print("\nPrograma finalizado. Lista completa:", lista_cidades)
+
+
+
+
+
