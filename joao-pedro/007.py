@@ -1,8 +1,13 @@
-LIMITE = 10000
+lista_cidades = []
+print("lista de cidades")
 
-cidades = []
-for i in range(LIMITE):
-    nome = input(f"Digite o nome da cidade {i + 1}: ")
-    cidades.append(nome)
-    print("Lista atualizada de cidades:", cidades)
 
+while True:
+  cidade =  input("Digite o nome da cidade para adiciona-la ou 'sair' para finalizar: ")
+  lista_cidades.append(cidade)  
+  print(f"Lista atualizada: {lista_cidades}")
+  print(f"Você digitou: {cidade}")
+  if cidade.lower () == "sair" :
+    print("o codigo foi encerrado")
+    break
+  
