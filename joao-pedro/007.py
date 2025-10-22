@@ -1,10 +1,8 @@
+LIMITE = 10000
+
 cidades = []
-for i in cidades:
+for i in range(LIMITE):
     nome = input(f"Digite o nome da cidade {i + 1}: ")
-    CLOSE = 'SAIR'
-    if nome == CLOSE:
-        break
-    else:
-        cidades.append(nome)
+    cidades.append(nome)
     print("Lista atualizada de cidades:", cidades)
 
