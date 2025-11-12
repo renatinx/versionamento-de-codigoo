@@ -1,5 +1,13 @@
-class ControleMarmitas:
-    def __init__(self):
+import tkinter as tk
+from tkinter import messagebox, ttk
+
+class ControleMarmitasGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("🍱 Controle de Marmitas")
+        self.root.geometry("500x400")
+        self.root.resizable(False, False)
+        
         self.estoque = {
             'arroz': 0,    
             'feijao': 0,   
@@ -13,108 +21,102 @@ class ControleMarmitas:
             'carne': 25,
             'salada': 10
         }
-    
-    def adicionar_estoque(self, ingrediente, quantidade):
-        """Adiciona quantidade ao estoque do ingrediente especificado"""
-        if ingrediente in self.estoque:
-            self.estoque[ingrediente] += quantidade
-            print(f"Adicionado {quantidade}g de {ingrediente}. Estoque atual: {self.estoque[ingrediente]}g")
-        else:
-            print("Ingrediente inválido!")
-    
-    def verificar_estoque(self):
-        """Mostra o estoque atual de todos os ingredientes"""
-        print("\n=== ESTOQUE ATUAL ===")
-        for ingrediente, quantidade in self.estoque.items():
-            print(f"{ingrediente.capitalize()}: {quantidade}g")
-    
+
+        self._montar_interface()
+        self.atualizar_lista_estoque()
+
+   
+    def _montar_interface(self):
+        titulo = tk.Label(self.root, text="🍱 Controle de Marmitas", font=("Arial", 16, "bold"))
+        titulo.pack(pady=10)
+
+        frame = tk.Frame(self.root)
+        frame.pack(pady=5)
+
+        tk.Label(frame, text="Ingrediente:").grid(row=0, column=0, padx=5, pady=5)
+        self.combo_ingrediente = ttk.Combobox(frame, values=["arroz", "feijao", "carne", "salada"], state="readonly")
+        self.combo_ingrediente.current(0)
+        self.combo_ingrediente.grid(row=0, column=1, padx=5, pady=5)
+
+        tk.Label(frame, text="Quantidade (g):").grid(row=1, column=0, padx=5, pady=5)
+        self.entry_quantidade = tk.Entry(frame)
+        self.entry_quantidade.grid(row=1, column=1, padx=5, pady=5)
+
+        btn_adicionar = tk.Button(frame, text="Adicionar ao estoque", command=self.adicionar_estoque)
+        btn_adicionar.grid(row=2, column=0, columnspan=2, pady=10)
+
+        separador = ttk.Separator(self.root, orient='horizontal')
+        separador.pack(fill='x', pady=5)
+
+        self.lista_estoque = tk.Listbox(self.root, height=6, font=("Courier", 11))
+        self.lista_estoque.pack(fill='both', padx=20, pady=5)
+
+        frame_venda = tk.Frame(self.root)
+        frame_venda.pack(pady=10)
+
+        tk.Label(frame_venda, text="Vender marmitas:").grid(row=0, column=0, padx=5, pady=5)
+        self.entry_venda = tk.Entry(frame_venda, width=10)
+        self.entry_venda.grid(row=0, column=1, padx=5, pady=5)
+
+        btn_vender = tk.Button(frame_venda, text="Vender", bg="#4CAF50", fg="white", command=self.vender_marmita)
+        btn_vender.grid(row=0, column=2, padx=5, pady=5)
+
+        self.label_marmitas = tk.Label(self.root, text="Marmitas possíveis: 0", font=("Arial", 12, "bold"))
+        self.label_marmitas.pack(pady=10)
+
+    def adicionar_estoque(self):
+        ingrediente = self.combo_ingrediente.get()
+        try:
+            quantidade = float(self.entry_quantidade.get())
+            if quantidade <= 0:
+                messagebox.showwarning("Aviso", "Digite uma quantidade positiva.")
+                return
+        except ValueError:
+            messagebox.showerror("Erro", "Digite um número válido!")
+            return
+        
+        self.estoque[ingrediente] += quantidade
+        messagebox.showinfo("Sucesso", f"{quantidade}g de {ingrediente} adicionados ao estoque.")
+        self.entry_quantidade.delete(0, tk.END)
+        self.atualizar_lista_estoque()
+
+    def atualizar_lista_estoque(self):
+        self.lista_estoque.delete(0, tk.END)
+        for ing, qtd in self.estoque.items():
+            self.lista_estoque.insert(tk.END, f"{ing.capitalize():8}: {qtd:6.1f} g")
+        self.label_marmitas.config(text=f"Marmitas possíveis: {self.calcular_marmitas_possiveis()}")
+
     def calcular_marmitas_possiveis(self):
-        """Calcula quantas marmitas podem ser feitas com o estoque atual"""
-        marmitas_possiveis = []
-        for ingrediente, quantidade in self.estoque.items():
-            if self.porcao_por_marmita[ingrediente] > 0:
-                marmitas = quantidade // self.porcao_por_marmita[ingrediente]
-                marmitas_possiveis.append(marmitas)
-        
-        if not marmitas_possiveis:
-            return 0
-        return min(marmitas_possiveis)
-    
-    def vender_marmita(self, quantidade):
-        """Registra a venda de uma quantidade de marmitas"""
-        marmitas_possiveis = self.calcular_marmitas_possiveis()
-        
-        if quantidade <= 0:
-            print("Quantidade inválida!")
-            return False
-            
-        if quantidade > marmitas_possiveis:
-            print(f"Não há ingredientes suficientes. Só é possível fazer {marmitas_possiveis} marmita(s).")
-            return False
-        
-        for ingrediente in self.estoque:
-            self.estoque[ingrediente] -= self.porcao_por_marmita[ingrediente] * quantidade
-        
-        print(f"\n✅ {quantidade} marmita(s) vendida(s) com sucesso!")
-        print(f"Marmitas restantes possíveis: {self.calcular_marmitas_possiveis()}")
-        return True
+        marmitas = []
+        for ing, qtd in self.estoque.items():
+            if self.porcao_por_marmita[ing] > 0:
+                marmitas.append(qtd // self.porcao_por_marmita[ing])
+        return int(min(marmitas)) if marmitas else 0
 
-def menu():
-    print("\n=== CONTROLE DE MARMITAS ===")
-    print("1. Adicionar ingredientes ao estoque")
-    print("2. Ver estoque atual")
-    print("3. Vender marmita(s)")
-    print("4. Sair")
-    return input("Escolha uma opção: ")
+    def vender_marmita(self):
+        try:
+            qtd = int(self.entry_venda.get())
+            if qtd <= 0:
+                messagebox.showwarning("Aviso", "Digite uma quantidade válida de marmitas.")
+                return
+        except ValueError:
+            messagebox.showerror("Erro", "Digite um número inteiro válido!")
+            return
 
-def main():
-    sistema = ControleMarmitas()
-
-    while True:
-        opcao = menu()
+        marmitas_disp = self.calcular_marmitas_possiveis()
+        if qtd > marmitas_disp:
+            messagebox.showerror("Erro", f"Não há ingredientes suficientes!\nDisponíveis: {marmitas_disp}")
+            return
         
-        if opcao == '1':
-            print("\n=== ADICIONAR AO ESTOQUE ===")
-            print("1. Arroz (100g por marmita)")
-            print("2. Feijão (50g por marmita)")
-            print("3. Carne (25g por marmita)")
-            print("4. Salada (10g por marmita)")
-            escolha = input("Escolha o ingrediente (ou 0 para voltar): ")
-            
-            if escolha == '0':
-                continue
-                
-            ingredientes = ['arroz', 'feijao', 'carne', 'salada']
-            try:
-                if escolha in ['1', '2', '3', '4']:
-                    quantidade = float(input(f"Quantos gramas de {ingredientes[int(escolha)-1]} deseja adicionar? "))
-                    sistema.adicionar_estoque(ingredientes[int(escolha)-1], quantidade)
-                else:
-                    print("Opção inválida!")
-            except ValueError:
-                print("Por favor, insira um número válido.")
-                
-        elif opcao == '2':
-            sistema.verificar_estoque()
-            print(f"\nMarmitas possíveis de fazer: {sistema.calcular_marmitas_possiveis()}")
-            
-        elif opcao == '3':
-            try:
-                quantidade = int(input("Quantas marmitas deseja vender? "))
-                sistema.vender_marmita(quantidade)
-            except ValueError:
-                print("Por favor, insira um número inteiro válido.")
-                
-        elif opcao == '4':
-            print("Saindo do sistema...")
-            break
-            
-        else:
-            print("Opção inválida! Tente novamente.")
+        for ing in self.estoque:
+            self.estoque[ing] -= self.porcao_por_marmita[ing] * qtd
+        
+        messagebox.showinfo("Venda registrada", f"{qtd} marmita(s) vendida(s) com sucesso!")
+        self.entry_venda.delete(0, tk.END)
+        self.atualizar_lista_estoque()
+
 
 if __name__ == "__main__":
-    print("=== SISTEMA DE CONTROLE DE MARMITAS ===")
-    print("Bem-vindo ao sistema de controle de marmitas!")
-    main()
-    
-
+    root = tk.Tk()
+    app = ControleMarmitasGUI(root)
+    root.mainloop()
